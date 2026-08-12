@@ -1,0 +1,68 @@
+<div class="mcp-tools-content">
+    <div class="mcp-tools-header">
+        <h3>MCP Tools</h3>
+        <div class="header-buttons">
+            <button id="add-server" class="menu_button" disabled><i class="fa-solid fa-plus"></i> Add Server</button>
+
+            <button id="open-server-settings" class="menu_button"><i class="fa-solid fa-cog"></i> Settings</button>
+            <button id="reload-all-tools" class="menu_button"><i class="fa-solid fa-sync-alt"></i> Refresh</button>
+        </div>
+    </div>
+
+    <!-- Add Server Form -->
+    <div id="add-server-form" class="add-server-form" style="display: none">
+        <h4>Add MCP Server</h4>
+        <div class="form-group">
+            <label for="server-input">Server Configuration</label>
+            <textarea
+                id="server-input"
+                class="text_pole"
+                rows="10"
+                placeholder='Enter server config or npx command. Examples:
+
+{
+  "mcpServers": {
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}
+
+Or simply:
+
+npx -y @modelcontextprotocol/server-brave-search'
+            ></textarea>
+        </div>
+        <div class="form-actions">
+            <button id="submit-server" class="menu_button" disabled><i class="fa-solid fa-check"></i> Add</button>
+            <button id="cancel-server" class="menu_button"><i class="fa-solid fa-times"></i> Cancel</button>
+        </div>
+    </div>
+
+    <div id="mcp-tools-list" class="mcp-tools-list">
+        <!-- Tools will be populated here -->
+    </div>
+
+    <template id="server-section-template">
+        <div class="server-tools-section">
+            <div class="server-header clickable">
+                <div class="header-content">
+                    <i class="fa-solid fa-chevron-right"></i>
+                    <h4></h4>
+                    <button class="delete-server menu_button"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <label class="checkbox_label">
+                    <input type="checkbox" class="server-toggle" />
+                    <span>Enable Server</span>
+                </label>
+            </div>
+            <div class="tools-list collapsed">
+                <!-- Tools will be populated here -->
+            </div>
+        </div>
+    </template>
+</div>

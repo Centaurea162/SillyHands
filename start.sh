@@ -14,3 +14,5 @@ npm install --no-save --no-audit --no-fund --loglevel=error --no-progress --omit
 
 echo "Entering SillyTavern..."
 node "server.js" "$@"
+
+
