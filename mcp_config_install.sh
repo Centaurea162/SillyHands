@@ -71,6 +71,10 @@ fi
 # --- 3. 验证 ----------------------------------------------------
 echo "=== [3/3] 验证 ==="
 ok=1
+# 确保 Linux 搜索二进制可执行（git 从 Windows 提交时可能丢失 +x 位）
+if [ -f "$MCP_FS_DIR/bin/rg" ]; then chmod +x "$MCP_FS_DIR/bin/rg"; fi
+if [ -f "$MCP_FS_DIR/bin/fd" ]; then chmod +x "$MCP_FS_DIR/bin/fd"; fi
+chmod +x "$ST_ROOT/mcp_config_install.sh" "$ST_ROOT/start.sh" 2>/dev/null || true
 [ -f "$MCP_FS_DIR/node_modules/@modelcontextprotocol/sdk/package.json" ] || { echo "[失败] mcp-fs: @modelcontextprotocol/sdk 缺失" >&2; ok=0; }
 [ -f "$MCP_FS_DIR/node_modules/diff/package.json" ] || { echo "[失败] mcp-fs: diff 缺失" >&2; ok=0; }
 [ -f "$ST_ROOT/plugins/SillyTavern-MCP-Server/dist/index.js" ] || { echo "[失败] MCP-Server 插件 dist 缺失" >&2; ok=0; }
