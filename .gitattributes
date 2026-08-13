@@ -2,8 +2,4 @@
 *.sh text eol=lf
 # Windows 批处理保持 CRLF（或 LF 均可运行）
 *.bat text eol=crlf
-# 二进制文件不转换
-scripts/mcp-fs/bin/rg binary
-scripts/mcp-fs/bin/fd binary
-scripts/mcp-fs/bin/rg.exe binary
-scripts/mcp-fs/bin/fd.exe binary
+# 搜索二进制由 mcp_config_install.sh/.bat 自动下载（见仓库根两个脚本），不再入库
