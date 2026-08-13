@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
+    "diff": "^8.0.4",
     "minimatch": "10.2.6",
     "zod": "4.4.3"
   }

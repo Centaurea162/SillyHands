@@ -414,9 +414,7 @@
         "apiKey": "",
         "autoConnect": false,
         "notifyUpdates": false,
-        "disabledExtensions": [
-            "third-party/agent-access"
-        ],
+        "disabledExtensions": [],
         "expressionOverrides": [],
         "memory": {
             "minLongMemory": 16,

@@ -27,7 +27,9 @@ const MCP_DATA = path.join(ST_ROOT, 'mcp_data');
 fs.mkdirSync(MCP_DATA, { recursive: true });
 
 // 2. 重写 allowedDirectories（清只读 → 写 → 恢复只读）
-const configPath = path.join(os.homedir(), '.claude-server-commander', 'config.json');
+const configDir = path.join(os.homedir(), '.claude-server-commander');
+fs.mkdirSync(configDir, { recursive: true }); // 首次运行目录可能不存在（Linux/WSL）
+const configPath = path.join(configDir, 'config.json');
 let config = {};
 try {
     config = JSON.parse(fs.readFileSync(configPath, 'utf8'));

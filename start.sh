@@ -12,6 +12,12 @@ echo "Installing Node Modules..."
 export NODE_ENV=production
 npm install --no-save --no-audit --no-fund --loglevel=error --no-progress --omit=dev --ignore-scripts
 
+# === MCP 桥依赖自检（幂等）：确保本地化 filesystem 服务器的依赖就绪 ===
+if [ -f "scripts/mcp-fs/package.json" ] && [ ! -d "scripts/mcp-fs/node_modules/@modelcontextprotocol/sdk" ]; then
+    echo "Installing mcp-fs dependencies (MCP filesystem server)..."
+    (cd scripts/mcp-fs && npm install --no-audit --no-fund --loglevel=error --no-progress)
+fi
+
 echo "Entering SillyTavern..."
 node "server.js" "$@"
 
