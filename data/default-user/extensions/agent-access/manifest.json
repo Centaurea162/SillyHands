@@ -1,0 +1,6 @@
+{
+  "display_name": "Agent Access",
+  "version": "1.0.0",
+  "description": "为 LLM 提供读取本地文件与抓取网页的函数工具(需配合 plugins/agent-access 服务器插件使用)",
+  "js": "index.js"
+}

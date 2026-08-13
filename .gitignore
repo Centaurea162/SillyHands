@@ -63,3 +63,26 @@ server.out.log
 server.pid
 plugins/**/.git/
 public/scripts/extensions/third-party/**/.git/
+
+# === MCP 配置入库（覆盖上方 /data 规则）===
+# 只放行运行必需的最小集：mcp_settings.json（三服务器定义）、settings.json（mcp.enabled/function_calling/deepseek 源）、agent-access 扩展数据
+!/data/
+/data/*
+!/data/default-user/
+/data/default-user/*
+!/data/default-user/mcp_settings.json
+!/data/default-user/settings.json
+!/data/default-user/extensions/
+/data/default-user/extensions/*
+!/data/default-user/extensions/agent-access/
+/data/default-user/extensions/agent-access/*
+!/data/default-user/extensions/agent-access/index.js
+!/data/default-user/extensions/agent-access/manifest.json
+
+# 敏感文件永不入库
+data/default-user/secrets.json
+data/cookie-secret.txt
+data/default-user/content.log
+data/default-user/stats.json
+data/default-user/image-metadata.json
+data/default-user/backups/
