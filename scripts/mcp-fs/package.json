@@ -2,7 +2,7 @@
   "name": "mcp-filesystem-local",
   "version": "1.0.0",
   "private": true,
-  "description": "Local fork of @modelcontextprotocol/server-filesystem with search_content (rg) and search_files_fd (fd) tools. Run: node dist/index.js <allowed-dir>",
+  "description": "Local fork of @modelcontextprotocol/server-filesystem. Run: node dist/index.js <allowed-dir>",
   "type": "module",
   "bin": {
     "mcp-fs": "dist/index.js"

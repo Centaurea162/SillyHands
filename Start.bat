@@ -1,7 +1,4 @@
 @echo off
-pushd %~dp0
-set NODE_ENV=production
-call npm install --no-save --no-audit --no-fund --loglevel=error --no-progress --omit=dev --ignore-scripts
-node server.js %*
-pause
-popd
+rem SillyTavern 启动脚本（Win10 原生运行，监听 0.0.0.0:8000，手机可访问 http://<本机IP>:8000）
+cd /d "%~dp0"
+node server.js

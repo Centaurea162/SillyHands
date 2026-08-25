@@ -5,10 +5,7 @@ import { RootsListChangedNotificationSchema, } from "@modelcontextprotocol/sdk/t
 import fs from "fs/promises";
 import { createReadStream } from "fs";
 import path from "path";
-import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
-import os from "node:os";
-import { pathToFileURL, fileURLToPath } from "url";
+import { pathToFileURL } from "url";
 import { z } from "zod";
 import { minimatch } from "minimatch";
 import { normalizePath, expandHome } from './path-utils.js';
@@ -535,95 +532,6 @@ server.registerTool("search_files", {
         content: [{ type: "text", text }],
         structuredContent: { content: text }
     };
-});
-// ================= 本地化增强：rg 内容搜索 + fd 文件名搜索（复用官方白名单校验） =================
-function resolveSearchBinary(name) {
-    const envVar = name === 'rg' ? 'SEARCH_MCP_RG' : 'SEARCH_MCP_FD';
-    if (process.env[envVar]) return process.env[envVar];
-    const exe = name + (process.platform === 'win32' ? '.exe' : '');
-    // 优先：随服务器分发的本地 bin/（<ST>/scripts/mcp-fs/bin/，基于模块位置推导，迁移安全）
-    const moduleDir = path.dirname(fileURLToPath(import.meta.url));
-    const localBin = path.join(moduleDir, '..', 'bin', exe);
-    if (existsSync(localBin)) return localBin;
-    // 回退：pi 的 agent bin 目录
-    const candidate = path.join(os.homedir(), '.pi', 'agent', 'bin', exe);
-    if (existsSync(candidate)) return candidate;
-    return exe; // 最后回退到 PATH
-}
-function runSearchBinary(binary, args, timeoutMs = 30000) {
-    return new Promise((resolvePromise) => {
-        const child = spawn(binary, args, { windowsHide: true });
-        let stdout = '', stderr = '', killed = false;
-        const timer = setTimeout(() => { killed = true; child.kill(); }, timeoutMs);
-        child.stdout.on('data', (d) => {
-            stdout += d;
-            if (stdout.length > 2 * 1024 * 1024) { killed = true; child.kill(); } // 2MB 输出保护
-        });
-        child.stderr.on('data', (d) => { stderr += d; });
-        child.on('error', (err) => { clearTimeout(timer); resolvePromise({ ok: false, error: `无法启动 ${binary}: ${err.message}` }); });
-        child.on('close', () => {
-            clearTimeout(timer);
-            resolvePromise({ ok: true, output: stdout, note: killed ? '[已中止：输出超限或超时]' : (stderr.trim().slice(0, 200)) });
-        });
-    });
-}
-function formatSearchResults(lines, maxResults) {
-    const limited = lines.slice(0, maxResults);
-    let text = limited.length > 0 ? limited.join('\n') : 'No matches found';
-    if (lines.length > maxResults) text += `\n\n[结果已截断：共 ${lines.length} 行匹配，仅显示前 ${maxResults} 行]`;
-    return text;
-}
-server.registerTool("search_content", {
-    title: "Search Content (ripgrep)",
-    description: "Recursively search file CONTENTS using ripgrep (rg.exe). Returns matching lines as 'path:line:content'. " +
-        "Searches only within allowed directories. Respects .gitignore. " +
-        "The fast equivalent of grep — use for finding code/text by content.",
-    inputSchema: {
-        path: z.string(),
-        pattern: z.string(),
-        ignoreCase: z.boolean().optional().default(false),
-        glob: z.string().optional().describe("文件过滤，如 '*.js' 或 '!*.min.js'"),
-        maxResults: z.number().optional().default(200)
-    },
-    outputSchema: { content: z.string() },
-    annotations: { readOnlyHint: true, openWorldHint: false }
-}, async (args) => {
-    const validPath = await validatePath(args.path);
-    const rgArgs = ['-n', '--no-heading'];
-    if (args.ignoreCase) rgArgs.push('-i');
-    if (args.glob) rgArgs.push('-g', args.glob);
-    rgArgs.push('--', args.pattern, validPath);
-    const { ok, output, error } = await runSearchBinary(resolveSearchBinary('rg'), rgArgs);
-    if (!ok) return { content: [{ type: 'text', text: `搜索失败：${error}` }] };
-    const lines = output.trim().split('\n').filter(Boolean);
-    const text = formatSearchResults(lines, args.maxResults);
-    return { content: [{ type: 'text', text }], structuredContent: { content: text } };
-});
-server.registerTool("search_files_fd", {
-    title: "Search File Names (fd)",
-    description: "Recursively find files/directories BY NAME using fd (fd.exe). Fast find-equivalent. " +
-        "By default ignores hidden files and .gitignore entries (set includeHidden to include them). " +
-        "Searches only within allowed directories.",
-    inputSchema: {
-        path: z.string(),
-        pattern: z.string(),
-        includeHidden: z.boolean().optional().default(false),
-        fileType: z.enum(['file', 'directory']).optional(),
-        maxResults: z.number().optional().default(200)
-    },
-    outputSchema: { content: z.string() },
-    annotations: { readOnlyHint: true, openWorldHint: false }
-}, async (args) => {
-    const validPath = await validatePath(args.path);
-    const fdArgs = ['--max-results', String(args.maxResults)];
-    if (args.includeHidden) fdArgs.push('-I');
-    if (args.fileType) fdArgs.push('-t', args.fileType);
-    fdArgs.push('--', args.pattern, validPath);
-    const { ok, output, error } = await runSearchBinary(resolveSearchBinary('fd'), fdArgs);
-    if (!ok) return { content: [{ type: 'text', text: `搜索失败：${error}` }] };
-    const lines = output.trim().split('\n').filter(Boolean);
-    const text = formatSearchResults(lines, args.maxResults);
-    return { content: [{ type: 'text', text }], structuredContent: { content: text } };
 });
 server.registerTool("get_file_info", {
     title: "Get File Info",
