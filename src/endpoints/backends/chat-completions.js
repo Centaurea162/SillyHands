@@ -1076,6 +1076,21 @@ async function sendDeepSeekRequest(request, response) {
         const processedMessages = addAssistantPrefix(postProcessPrompt(request.body.messages, PROMPT_PROCESSING_TYPE.SEMI_TOOLS, getPromptNames(request)), bodyParams.tools, 'prefix');
         addReasoningContentToToolCalls(processedMessages);
 
+        // DeepSeek thinking mode (V4) additionally validates PLAIN assistant messages
+        // that follow a tool-call chain: if the request ends with a text-only assistant
+        // message that lacks `reasoning_content`, the API rejects it with
+        // "The `reasoning_content` in the thinking mode must be passed back to the API."
+        // (Verified empirically: a bare `reasoning_content: ''` satisfies the check,
+        // and the field is harmless when thinking is disabled. Only applies when tools
+        // are in play, which is when DeepSeek enforces the requirement.)
+        if (Array.isArray(request.body.tools) && request.body.tools.length > 0) {
+            for (const message of processedMessages) {
+                if (message?.role === 'assistant' && !('reasoning_content' in message)) {
+                    message.reasoning_content = '';
+                }
+            }
+        }
+
         if (request.body.include_reasoning && request.body.reasoning_effort) {
             bodyParams['reasoning_effort'] = request.body.reasoning_effort;
         }
