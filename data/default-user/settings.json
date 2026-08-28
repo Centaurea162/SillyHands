@@ -2,7 +2,7 @@
     "firstRun": false,
     "accountStorage": {
         "__migrated": "1",
-        "NavOpened": "false",
+        "NavOpened": "true",
         "LNavOpened": "true",
         "StoryStringValidationCache": "{\"hashCache\":{\"3090278210222208\":{\"fieldsWarned\":{}}}}",
         "SelectedNavTab": "rm_button_characters"
@@ -1134,7 +1134,7 @@
         "chat_completion_source": "deepseek",
         "max_context_unlocked": true,
         "show_external_models": false,
-        "proxy_password": "",
+        "proxy_password": "838268894",
         "assistant_prefill": "",
         "assistant_impersonation": "",
         "use_sysprompt": false,
