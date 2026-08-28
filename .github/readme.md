@@ -1,6 +1,7 @@
 # SillyHands
 
-> 基于 [SillyTavern](https://github.com/SillyTavern/SillyTavern)，SillyHands 让你的 SillyTavern 拥有 Pi Coding Agent 风格的工具调用能力。
+> 基于 [SillyTavern](https://github.com/SillyTavern/SillyTavern)，SillyHands 让你的 SillyTavern 拥有 Pi Coding Agent 风格的工具调用能力，让你的角色可以检索网络和本地信息。
+> 
 
 SillyHands 在保留官方 SillyTavern 全部能力（多后端 LLM 接入、角色卡、世界书、提示词组装、扩展体系）的基础上，围绕「让聊天模型真正能调用外部工具」这一目标做了一系列工程化改造：内置 MCP 桥四服务器、本地化 filesystem 服务器、Tavily 网页搜索、desktop-commander 终端执行，以及一套跨平台一键部署脚本——**git clone 之后即可在 Windows / Linux / WSL / Termux 上直接运行**。
 
@@ -83,16 +84,17 @@ start.bat          REM 或 node server.js
 ![1787904718233.png](assets/1787904718233.png)
 2. **配置带有工具信息的提示词**：提示词中需带有工具信息，LLM才会进行工具调用。选如下四个选项之一即可:
 ![1787904951227.png](assets/1787904951227.png)
-3. **修改 filesystem 白名单**：编辑 `data/default-user/mcp_settings.json`，把 `filesystem` 的 `args` 中 `H:/workspace` 改为本机实际路径（Linux 示例：`/home/ubuntu/workspace`），然后重启 ST；
+3. **修改 filesystem 白名单目录**：编辑白名单目录，让 filesystem 只可修改白名单目录下的文件，防止非预期变更。 `data/default-user/mcp_settings.json`，把 `filesystem` 的 `args` 中 `H:/workspace` 改为本机实际路径（Linux 示例：`/home/ubuntu/workspace`），然后重启 ST；
 4. **浏览器访问** `http://localhost:8000`，首次访问创建管理员账号；
 5. **验证 MCP**：扩展设置 → MCP Client → Enable 勾选，四个服务器自动连接；Manage Tools 中应能看到 49 个工具（filesystem 14 / web 4 / desktop-commander 26 / tavily 5）；
 6. **配置搜索引擎能力**： SillyHands使用搜索引擎的能力借助了第三方平台Tavily(仅抓取网页无需借助Tavily，但检索效率低)，需要配置Tavily key才能使用搜索功能。在https://app.tavily.com/home 注册账号获取Key之后, 编辑`data/default-user/mcp_settings.json`里的`"TAVILY_API_KEY": "替换成你的Tavily Key"`字段后即可使用。平台赠送免费用户一个月1000次搜索额度。
 
 ---
 
-## 注意事项
+## ⚠️注意事项⚠️
 
-- **desktop-commander 为全权限终端**：仅建议在可信对话中使用；`~/.claude-server-commander/config.json` 可配置 `defaultShell` / `blockedCommands`；
+- **desktop-commander 为全权限终端，理论上可以修改任意目录的文件**：仅建议在可信对话中使用；`~/.claude-server-commander/config.json` 可配置 `defaultShell` / `blockedCommands`；如果想要禁用 desktop-commander，编辑`data/default-user/mcp_settings.json`里 在 `"disabledServers": []` 替换为 `"disabledServers": ["desktop-commander"]`，禁用后filesystem仍可完成绝大部分文件操作，且保证只操作白名单目录下的文件。
+- **虽然理论上 SillyHands 拥有和Pi Coding Agent相同的能力，但不推荐将 SillyHands 作为 Harness 进行代码开发。**
 
 ---
 
