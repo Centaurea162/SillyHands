@@ -362,7 +362,7 @@
         "persona_description_lorebook": "",
         "persona_show_notifications": true,
         "persona_sort_order": "asc",
-        "custom_stopping_strings": "",
+        "custom_stopping_strings": "[]",
         "custom_stopping_strings_macro": true,
         "fuzzy_search": true,
         "encode_tags": false,
@@ -495,8 +495,40 @@
             "custom": []
         },
         "connectionManager": {
-            "selectedProfile": "",
-            "profiles": []
+            "selectedProfile": "54e2216a-e5b7-4a62-b70e-9f03f6dac37a",
+            "profiles": [
+                {
+                    "id": "12a61a9a-58ac-454e-a443-2dafc4e8bc03",
+                    "mode": "cc",
+                    "exclude": [],
+                    "api": "custom",
+                    "preset": "Default",
+                    "api-url": "https://www.rightapi.ai/gemini/v1",
+                    "model": "gemini-3.7-flash",
+                    "proxy": "None",
+                    "stop-strings": "",
+                    "start-reply-with": "",
+                    "reasoning-template": "Think XML",
+                    "prompt-post-processing": "none",
+                    "secret-id": "a3e3aeba-f3e8-4117-adf4-b8aed0d7853b",
+                    "name": "custom gemini-3.7-flash - Default"
+                },
+                {
+                    "id": "54e2216a-e5b7-4a62-b70e-9f03f6dac37a",
+                    "mode": "cc",
+                    "exclude": [],
+                    "api": "deepseek",
+                    "preset": "Default",
+                    "model": "deepseek-v4-flash",
+                    "proxy": "None",
+                    "stop-strings": "",
+                    "start-reply-with": "",
+                    "reasoning-template": "Think XML",
+                    "prompt-post-processing": "none",
+                    "secret-id": "0d24d681-3d38-4210-afb4-2049f1e6e151",
+                    "name": "deepseek deepseek-v4-flash - Defaul"
+                }
+            ]
         },
         "dice": {},
         "regex": [],
@@ -1086,8 +1118,8 @@
         "azure_deployment_name": "",
         "azure_api_version": "2024-02-15-preview",
         "azure_openai_model": "",
-        "custom_model": "",
-        "custom_url": "",
+        "custom_model": "gemini-3.7-flash",
+        "custom_url": "https://www.rightapi.ai/gemini/v1",
         "custom_include_body": "",
         "custom_exclude_body": "",
         "custom_include_headers": "",
@@ -1102,7 +1134,7 @@
         "chat_completion_source": "deepseek",
         "max_context_unlocked": true,
         "show_external_models": false,
-        "proxy_password": "838268894",
+        "proxy_password": "",
         "assistant_prefill": "",
         "assistant_impersonation": "",
         "use_sysprompt": false,
