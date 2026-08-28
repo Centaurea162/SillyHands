@@ -32,7 +32,7 @@
       ],
       "type": "stdio",
       "env": {
-        "TAVILY_API_KEY": "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"
+        "TAVILY_API_KEY": "替换成你的Tavily Key"
       }
     }
   },
