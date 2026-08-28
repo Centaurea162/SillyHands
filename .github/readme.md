@@ -1,6 +1,6 @@
 # SillyHands
 
-> 基于 [SillyTavern](https://github.com/SillyTavern/SillyTavern) 的个人定制分支（mod），核心特色：**AI 工具调用（MCP）一体化开箱即用**。
+> 基于 [SillyTavern](https://github.com/SillyTavern/SillyTavern)，SillyHands 让你的 SillyTavern 拥有 Pi Coding Agent 风格的工具调用能力。
 
 SillyHands 在保留官方 SillyTavern 全部能力（多后端 LLM 接入、角色卡、世界书、提示词组装、扩展体系）的基础上，围绕「让聊天模型真正能调用外部工具」这一目标做了一系列工程化改造：内置 MCP 桥四服务器、本地化 filesystem 服务器、Tavily 网页搜索、desktop-commander 终端执行，以及一套跨平台一键部署脚本——**git clone 之后即可在 Windows / Linux / WSL / Termux 上直接运行**。
 
