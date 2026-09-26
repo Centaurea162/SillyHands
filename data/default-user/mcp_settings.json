@@ -47,7 +47,7 @@
       "extract_text"
     ]
   },
-  "disabledServers": [],
+  "disabledServers": ["desktop-commander"],
   "cachedTools": {
     "filesystem": [
       {
